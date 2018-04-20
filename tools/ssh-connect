@@ -1,0 +1,38 @@
+#!/usr/bin/expect -f
+
+set timeout 20
+set hostname [lindex $argv 0]
+if {$hostname=="lab1"} {
+	set ip htsat.vicp.cc
+	set port 222
+	set passwd Lab12#$
+} elseif {$hostname=="lab1-cmp"} {
+	set ip htsat.vicp.cc
+	set port 221
+	set passwd Lab12#$
+} elseif {$hostname=="lab2"} {
+	set ip 114.119.4.74
+	set port 222
+	set passwd txj@123
+} elseif {$hostname=="labr2-cmp"} {
+	set ip 114.119.4.74
+	set port 221
+	set passwd txj@123
+} elseif {$hostname=="hulk"} {
+	set ip 10.229.43.116
+	set port 22
+	set passwd txj@123
+} else {
+	send "Input error!\n"
+	exit 1
+}
+
+spawn ssh -p $port tanxiaojun@$ip
+
+expect {
+"*yes/no" { send "yes\r"; exp_continue }
+"*password:" { send "$passwd\r" }
+}
+interact
+
+
